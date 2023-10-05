@@ -1,0 +1,213 @@
+<body>
+    <section class=" bg-image">
+        <div class="mask d-flex align-items-center h-100 gradient-custom-3">
+            <div class="container h-100">
+                <div class="row d-flex justify-content-center align-items-center h-100">
+                    <div class="col-12 col-md-9 col-lg-7 col-xl-6">
+                        <div class="card" style="border-radius: 15px;">
+                            <div class="card-body p-5">
+                                <h2 class="text-uppercase text-center mb-5">Create an account</h2>
+                                <form #regform="ngForm">
+
+                                    <div class="form-outline mb-4">
+                                        <small style="color: red;" *ngIf="regname.invalid && regname.touched">Pls Enter
+                                            Name</small><br>
+                                        <input type="text" class="form-control form-control-lg" required
+                                            #regname="ngModel" ngModel id="name" name="name"
+                                            [class.is-invalid]="regname.invalid && regname.touched">
+
+                                        <label class="form-label" for="name">Your Name</label>
+
+                                    </div>
+
+
+                                    <div class="form-outline mb-4">
+                                        <small style="color: red;" *ngIf="regmail.invalid && regmail.touched">Pls Enter
+                                            Valid Email</small><br>
+                                        <input type="email" id="form3Example3cg" #regmail="ngModel" ngModel id="email"
+                                            name="email" [class.is-invalid]="regmail.invalid && regmail.touched"
+                                            class="form-control form-control-lg" required
+                                            pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$">
+
+                                        <label class="form-label" for="form3Example3cg">Your Email</label>
+                                        <br>
+                                    </div>
+
+
+
+
+                                    <div class="form-outline mb-4">
+
+                                        <div class="password-strength" [style.color]="strengthColor">
+                                            {{ passwordStrengthText }}
+                                        </div>
+                                        <div class="error-messages">
+                                            <p style="color:red" *ngIf="regpass.touched && regpass.invalid">Password is
+                                                required</p>
+                                            <p style="color:rgb(135, 167, 6)"
+                                                *ngIf="password.length < 8 && regpass.invalid &&regpass.touched">
+                                                *Password must be at least 8 characters long.</p>
+                                        </div>
+                                        <input type="password" class="form-control form-control-lg" id="password"
+                                            ngModel [(ngModel)]="password" #regpass="ngModel" (input)="checkStrength()"
+                                            #pw name="password" [class.is-invalid]="regpass.invalid && regpass.touched"
+                                            required>
+                                        <label for="password" class="form-label">Password</label><br>
+
+
+                                        <small *ngIf="regrepass.invalid && regrepass.touched" style="color: red;">
+                                            *pls re enter password
+                                        </small><br>
+                                        <small *ngIf="!passwordsMatching && isConfirmPasswordDirty" style="color: red;">
+                                            Passwords did not match
+                                        </small>
+
+                                        <input type="password" class="form-control form-control-lg"
+                                            [ngClass]='confirmPasswordClass' id="cPassword" #cpw
+                                            (keyup)='checkPasswords(pw.value, cpw.value)' name="repass"
+                                            #regrepass="ngModel" ngModel required
+                                            [class.is-invalid]="regrepass.invalid && regrepass.touched">
+                                        <label for="cPassword" class="form-label">Re- enter password</label>
+                                    </div> <br>
+                                    <div class="form-outline mb-4">
+                                        <small style="color: red;" *ngIf=" regsalary.touched && regsalary.invalid">
+                                            Enter salary
+                                        </small> <br>
+
+                                        <small style="color: rgb(195, 209, 6);"
+                                            *ngIf="regsalary.invalid && regsalary.touched">
+                                            *Salary must be between 50000 and 100000
+                                        </small>
+                                        <input type="number" id="s1" name="salary" class="form-control"
+                                            #regsalary="ngModel" min="50000" max="100000" ngModel
+                                            [class.is-invalid]="regsalary.invalid && regsalary.touched" required>
+                                        <label class="form-label" for="s1">Salary</label>
+                                    </div>
+
+
+
+
+
+
+
+
+
+
+                                    <div class="form-outline mb-4">
+                                        <small style="color: red;" *ngIf="ageMessage">{{ageMessage}}</small>
+                                        <div style="color: black;" *ngIf="regage.valid && age !== null">{{age}} Years
+                                            old</div>
+
+                                        <input type="date" id="d1" name="dob" class="form-control form-control-lg"
+                                            #regage="ngModel" (change)="CalculateAge()" [(ngModel)]="bithdate" required
+                                            [class.is-invalid]="regage.invalid && regage.touched" [max]="maxDate"
+                                            min="1979-12-31">
+                                        <label class="form-label" for="d1">Date of birth</label>
+                                    </div><br>
+
+                                    <div class="form-outline mb-4">
+                                        <small style="color: red;" *ngIf="regdor.invalid && regdor.touched">
+                                            Enter your registration Date
+                                        </small>
+                                        <input type="date" id="d2" name="dor" class="form-control form-control-lg"
+                                            #regdor="ngModel" ngModel
+                                            [class.is-invalid]="regdor.invalid && regdor.touched" [max]="rd"
+                                            [min]="minDate" required />
+                                        <label class="form-label" for="d2">Date of Registration</label>
+                                    </div>
+                                    <div class="form-group mb-4">
+                                        <label class="form-label">Gender:</label><br>
+                                        <small style="color: red;" *ngIf="!selectedGender && isGenderDirty">Please
+                                            select gender</small>
+                                        <br>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="gender" id="male"
+                                                value="male" [(ngModel)]="selectedGender" (change)="genderChanged()"
+                                                required>
+                                            <label class="form-check-label" #reggender="ngModel" for="male" ngModel
+                                                (ngModelchange)="genderChanged()">Male</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="gender" id="female"
+                                                value="female" [(ngModel)]="selectedGender"
+                                                (ngModelchange)="genderChanged()">
+                                            <label class="form-check-label" for="female">Female</label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group mb-4" *ngIf="selectedGender === 'male'">
+                                        <label class="form-label">Select Male Clothing:</label>
+                                        <select class=" dropdown-toggle form-control-lg" id="maleClothing"
+                                            name="maleClothing" [(ngModel)]="items" required>
+                                            <option *ngFor="let item of maleClothingItems" [value]="item">{{ item }}
+                                            </option>
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group mb-4" *ngIf="selectedGender === 'female'">
+                                        <label class="form-label">Select Female Clothing:</label>
+                                        <select class="dropdown-toggle form-control-lg" id="femaleClothing"
+                                            name="femaleClothing" [(ngModel)]="items" required>
+                                            <option *ngFor="let item of femaleClothingItems" [value]="item">{{ item }}
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group mb-4">
+                                        <small *ngIf="!regphone.valid && (regphone.dirty || regphone.touched)">
+                                            Please enter a valid 10-digit phone number.
+                                        </small>
+                                        <input type="number" class="form-control form-control-lg" id="phone"
+                                            name="phone" ngModel #regphone="ngModel" required
+                                            [class.is-invalid]="regphone.invalid && regphone.touched"
+                                            pattern="[0-9]{10}">
+                                        <label class="form-label" for="phone">Phone Number:</label>
+
+
+                                    </div>
+
+                                    <div class="form-group mb-4">
+
+                                        <select class="form-control form-control-lg" id="country" name="country"
+                                            ngModel>
+                                            <option value="usa">United States</option>
+                                            <option value="canada">Canada</option>
+                                            <option value="uk">United Kingdom</option>
+                                        </select>
+                                        <label class="form-check-label" for="country"> Select Country</label>
+                                    </div><br>
+
+                                    <div class="form-check d-flex justify-content-center mb-5">
+                                        <input class="form-check-input me-2" type="checkbox" id="form2Example3cg"
+                                            [disabled]="!linkVisited" required>
+                                        <label class="form-check-label" for="form2Example3g">
+                                            I agree all statements in
+                                        </label><a href="https://google.com" target="_blank" class="text-body"
+                                            (click)="markLinkAsVisited()"><u>Terms of service</u></a>
+
+                                    </div>
+
+                                    <div class="d-flex justify-content-center">
+                                        <button type="submit"
+                                            class="btn btn-success btn-block btn-lg gradient-custom-4 text-body"
+                                            [disabled]="!regform.valid">Register</button> &nbsp;&nbsp;&nbsp;&nbsp;
+                                        <button type="button"
+                                            class="btn btn-danger btn-block btn-lg gradient-custom-4 text-body">
+                                            reset</button>
+
+                                    </div>
+
+
+
+
+                                    <p class="text-center text-muted mt-5 mb-0">Have already an account? <a href="#!"
+                                            class="fw-bold text-body"><u>Login here</u></a></p>
+
+                                </form>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
